@@ -138,6 +138,7 @@ const GlobalStyle = createGlobalStyle`
 
     .root {
         font-family: 'Roboto', sans-serif;
+        color: #293845;
     }
 `;
 
