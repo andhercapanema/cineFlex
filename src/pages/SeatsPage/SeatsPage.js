@@ -16,9 +16,21 @@ function SeatsPage() {
         return "YELLOW";
     };
 
-    const selectSeat = (seat) => {
-        setSelectedSeats([...selectedSeats, seat.name]);
+    const selectSeat = ({ name }) => {
+        console.log("name", name);
+        console.log(selectedSeats.includes(name));
+        if (selectedSeats.includes(name)) {
+            const updatedSelectedSeats = selectedSeats.filter(
+                (selected) => selected !== name
+            );
+            setSelectedSeats(updatedSelectedSeats);
+            return;
+        }
+
+        setSelectedSeats([...selectedSeats, name]);
     };
+
+    console.log("selectedSeats", selectedSeats);
 
     useEffect(() => {
         const URL = `https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${idSession}/seats`;
