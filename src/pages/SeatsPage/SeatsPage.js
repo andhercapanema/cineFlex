@@ -11,26 +11,24 @@ function SeatsPage() {
     const { idSession } = useParams();
 
     const seatColor = (seat) => {
-        if (selectedSeats.includes(seat.name)) return "GREEN";
+        if (selectedSeats.includes(seat.id)) return "GREEN";
         if (seat.isAvailable) return "GREY";
         return "YELLOW";
     };
 
-    const selectSeat = ({ name }) => {
-        console.log("name", name);
-        console.log(selectedSeats.includes(name));
-        if (selectedSeats.includes(name)) {
+    const selectSeat = ({ id, isAvailable }) => {
+        if (selectedSeats.includes(id)) {
             const updatedSelectedSeats = selectedSeats.filter(
-                (selected) => selected !== name
+                (selected) => selected !== id
             );
             setSelectedSeats(updatedSelectedSeats);
             return;
         }
 
-        setSelectedSeats([...selectedSeats, name]);
-    };
+        if (!isAvailable) return alert("Esse assento não está disponível!");
 
-    console.log("selectedSeats", selectedSeats);
+        setSelectedSeats([...selectedSeats, id]);
+    };
 
     useEffect(() => {
         const URL = `https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${idSession}/seats`;
@@ -59,6 +57,7 @@ function SeatsPage() {
                         key={seat.id}
                         color={seatColor(seat)}
                         onClick={() => selectSeat(seat)}
+                        disabled={!seat.isAvailable}
                     >
                         <p>{seat.name}</p>
                     </S.Seat>
