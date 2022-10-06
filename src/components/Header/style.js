@@ -10,4 +10,9 @@ export const StyledHeader = styled.header`
     font-size: 34px;
     line-height: 40px;
     color: #e8833a;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
 `;

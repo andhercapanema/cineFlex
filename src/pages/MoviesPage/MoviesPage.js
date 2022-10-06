@@ -1,32 +1,43 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as S from "./style";
 import axios from "axios";
+import LoadingPage from "../LoadingPage/LoadingPage";
+import { Link } from "react-router-dom";
 
-function MoviesPage() {
-    const URL = "https://mock-api.driven.com.br/api/v8/cineflex";
-    const [movies, setMovies] = useState([]);
+function MoviesPage({ setChosenMovie }) {
+    const [movies, setMovies] = useState(null);
 
-    axios
-        .get(`${URL}/movies`)
-        .then((res) => {
-            console.log(res.data);
-            setMovies(res.data);
-        })
-        .catch((err) => {
-            console.error(err);
-        });
+    useEffect(() => {
+        const URL = "https://mock-api.driven.com.br/api/v8/cineflex";
+
+        axios
+            .get(`${URL}/movies`)
+            .then((res) => {
+                console.log(res.data);
+                setMovies(res.data);
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    }, []);
+
+    if (movies === null) {
+        return <LoadingPage />;
+    }
 
     return (
         <S.StyledMoviesPage>
             <h2>Selecione o filme</h2>
             <S.MoviesSection>
                 {movies.map((movie) => (
-                    <S.MovieCover>
-                        <img
-                            src={movie.posterURL}
-                            alt={`Capa filme ${movie.title}`}
-                        ></img>
-                    </S.MovieCover>
+                    <Link to={`/sessoes/${movie.id}`} key={movie.id}>
+                        <S.MovieCover onClick={() => setChosenMovie(movie)}>
+                            <img
+                                src={movie.posterURL}
+                                alt={`Capa filme ${movie.title}`}
+                            />
+                        </S.MovieCover>
+                    </Link>
                 ))}
             </S.MoviesSection>
         </S.StyledMoviesPage>

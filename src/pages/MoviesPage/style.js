@@ -6,6 +6,7 @@ export const StyledMoviesPage = styled.main`
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 67px;
 
     h2 {
         margin: 45px 0 38px;
@@ -31,6 +32,7 @@ export const MovieCover = styled.li`
     margin-bottom: 11px;
     box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.1);
     border-radius: 3px;
+    cursor: pointer;
 
     img {
         width: 129px;
