@@ -47,6 +47,7 @@ export const Seat = styled.li`
     justify-content: center;
     margin-right: 8px;
     margin-bottom: 18px;
+    cursor: ${({ disabled }) => !disabled && "pointer"};
 
     p {
         font-size: 11px;

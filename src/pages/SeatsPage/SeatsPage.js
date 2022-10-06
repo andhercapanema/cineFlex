@@ -11,9 +11,13 @@ function SeatsPage() {
     const { idSession } = useParams();
 
     const seatColor = (seat) => {
-        if (selectedSeats.includes(Number(seat.name))) return "GREEN";
+        if (selectedSeats.includes(seat.name)) return "GREEN";
         if (seat.isAvailable) return "GREY";
         return "YELLOW";
+    };
+
+    const selectSeat = (seat) => {
+        setSelectedSeats([...selectedSeats, seat.name]);
     };
 
     useEffect(() => {
@@ -39,22 +43,26 @@ function SeatsPage() {
             <h2>Selecione o(s) assento(s)</h2>
             <S.SessionMap>
                 {seats.map((seat) => (
-                    <S.Seat key={seat.id} color={seatColor(seat)}>
+                    <S.Seat
+                        key={seat.id}
+                        color={seatColor(seat)}
+                        onClick={() => selectSeat(seat)}
+                    >
                         <p>{seat.name}</p>
                     </S.Seat>
                 ))}
             </S.SessionMap>
             <S.SeatsLabel>
                 <S.LabelDescription>
-                    <S.Seat color={"GREEN"}></S.Seat>
+                    <S.Seat color={"GREEN"} disabled={true}></S.Seat>
                     <p>Selecionado</p>
                 </S.LabelDescription>
                 <S.LabelDescription>
-                    <S.Seat color={"GREY"}></S.Seat>
+                    <S.Seat color={"GREY"} disabled={true}></S.Seat>
                     <p>Disponível</p>
                 </S.LabelDescription>
                 <S.LabelDescription>
-                    <S.Seat color={"YELLOW"}></S.Seat>
+                    <S.Seat color={"YELLOW"} disabled={true}></S.Seat>
                     <p>Indisponível</p>
                 </S.LabelDescription>
             </S.SeatsLabel>
