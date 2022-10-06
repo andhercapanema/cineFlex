@@ -14,6 +14,7 @@ export const StyledMoviesPage = styled.main`
         font-size: 24px;
         line-height: 28px;
         letter-spacing: 0.04em;
+        text-align: center;
     }
 `;
 

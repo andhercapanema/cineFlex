@@ -8,7 +8,7 @@ function MoviesPage({ setChosenMovie }) {
     const [movies, setMovies] = useState(null);
 
     useEffect(() => {
-        const URL = "https://mock-api.driven.com.br/api/v8/cineflex";
+        const URL = "https://mock-api.driven.com.br/api/v5/cineflex";
 
         axios
             .get(`${URL}/movies`)

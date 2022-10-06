@@ -12,6 +12,7 @@ export const StyledSessionsPage = styled.main`
         font-size: 24px;
         line-height: 28px;
         letter-spacing: 0.04em;
+        text-align: center;
     }
 `;
 
@@ -25,15 +26,8 @@ export const SessionDay = styled.div`
     button {
         width: 83px;
         height: 43px;
-        background: #e8833a;
-        border-radius: 3px;
-        border: none;
         margin: 22px 8px 22px 0;
-        cursor: pointer;
 
-        font-size: 18px;
-        line-height: 21px;
         letter-spacing: 0.02em;
-        color: #fff;
     }
 `;

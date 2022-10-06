@@ -140,6 +140,19 @@ const GlobalStyle = createGlobalStyle`
         font-family: 'Roboto', sans-serif;
         color: #293845;
     }
+
+    button {
+        background: #e8833a;
+        border-radius: 3px;
+        border: none;
+
+        cursor: pointer;
+
+        font-size: 18px;
+        line-height: 21px;
+        letter-spacing: 0.04em;
+        color: #fff;
+    }
 `;
 
 export default GlobalStyle;
