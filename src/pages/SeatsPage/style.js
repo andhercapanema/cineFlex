@@ -86,8 +86,15 @@ export const BookingForm = styled.form`
     }
 `;
 
-export const StyledInput = styled.div`
+export const StyledInputs = styled.div`
     margin: 0 auto 14px;
+
+    strong {
+        width: 100%;
+        font-size: 18px;
+        line-height: 21px;
+        margin-bottom: 2px;
+    }
 
     label {
         font-size: 18px;
@@ -103,6 +110,7 @@ export const StyledInput = styled.div`
         border-radius: 3px;
         padding-left: 18px;
         font-size: 18px;
+        margin-bottom: 14px;
 
         &::placeholder {
             font-style: italic;

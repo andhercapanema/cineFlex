@@ -5,6 +5,7 @@ import { StyledHeader } from "./style";
 function Header({ resetBooking }) {
     const navigate = useNavigate();
     const isInMoviesPage = useMatch("/");
+    const isInSuccessPage = useMatch("/sucesso");
 
     function returnToPreviousPage() {
         navigate(-1);
@@ -16,7 +17,7 @@ function Header({ resetBooking }) {
     }
     return (
         <StyledHeader>
-            {!isInMoviesPage && (
+            {!isInMoviesPage && !isInSuccessPage && (
                 <ion-icon
                     name="arrow-back-circle"
                     onClick={returnToPreviousPage}

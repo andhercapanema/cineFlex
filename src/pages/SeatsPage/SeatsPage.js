@@ -5,18 +5,11 @@ import LoadingPage from "../LoadingPage/LoadingPage";
 import * as S from "./style";
 import Footer from "../../components/Footer/Footer";
 
-function SeatsPage({
-    selectedSeats,
-    setSelectedSeats,
-    form,
-    setForm,
-    chosenMovie,
-    chosenSession,
-}) {
+function SeatsPage({ form, setForm, chosenMovie, chosenSession }) {
     const [seats, setSeats] = useState(null);
     const { idSession } = useParams();
     const navigate = useNavigate();
-    let selectedSeatsId = selectedSeats.map((seat) => seat.id);
+    let selectedSeatsId = form.map((ticket) => ticket.seat.id);
 
     const seatColor = (seat) => {
         if (selectedSeatsId.includes(seat.id)) return "GREEN";
@@ -27,21 +20,43 @@ function SeatsPage({
     const selectSeat = (seat) => {
         const { id, isAvailable } = seat;
 
+        const ticketSelectedSeat = form.filter(
+            (ticket) => ticket.seat.id === id
+        )[0];
+        const inputsAreFilled =
+            ticketSelectedSeat?.name !== "" || ticketSelectedSeat?.cpf !== "";
+
         if (selectedSeatsId.includes(id)) {
-            const updatedSelectedSeats = selectedSeats.filter(
-                (selected) => selected.id !== id
-            );
-            setSelectedSeats(updatedSelectedSeats);
+            let confirmed = true;
+
+            if (inputsAreFilled) {
+                confirmed = window.confirm(
+                    "Você realmente quer remover este assento? A remoção apagará os dados preenchidos para este assento!"
+                );
+            }
+
+            if (confirmed) {
+                const updatedForm = form.filter(
+                    (ticket) => ticket.seat.id !== id
+                );
+                setForm(updatedForm);
+                return;
+            }
+
             return;
         }
 
         if (!isAvailable) return alert("Esse assento não está disponível!");
 
-        setSelectedSeats([...selectedSeats, seat]);
+        setForm([...form, { seat: seat, name: "", cpf: "" }]);
     };
 
-    const handleForm = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
+    const handleForm = (e, seat, index) => {
+        form[index] = {
+            ...form[index],
+            [e.target.name]: e.target.value,
+        };
+        setForm([...form]);
     };
 
     useEffect(() => {
@@ -51,7 +66,6 @@ function SeatsPage({
             .get(seatsURL)
             .then((res) => {
                 setSeats(res.data.seats);
-                // console.log(res.data.seats);
             })
             .catch((err) => {
                 console.error(err);
@@ -63,12 +77,21 @@ function SeatsPage({
 
         const bookingURL =
             "https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many";
+        const body = {
+            ids: form.map((ticket) => ticket.seat.id),
+            compradores: form.map((ticket) => {
+                return {
+                    name: ticket.name,
+                    cpf: ticket.cpf,
+                    idAssento: ticket.seat.id,
+                };
+            }),
+        };
 
         axios
-            .post(bookingURL, { ...form, ids: selectedSeatsId })
+            .post(bookingURL, body)
             .then((res) => {
                 navigate("/sucesso");
-                // console.log(res);
             })
             .catch((err) => {
                 console.error(err.response);
@@ -123,32 +146,45 @@ function SeatsPage({
                     </S.LabelDescription>
                 </S.SeatsLabel>
                 <S.BookingForm onSubmit={bookSeats}>
-                    <S.StyledInput>
-                        <label htmlFor="name">Nome do comprador:</label>
-                        <input
-                            type="text"
-                            name="name"
-                            id="name"
-                            value={form.name}
-                            onChange={handleForm}
-                            placeholder="Digite seu nome..."
-                            required
-                            data-identifier="buyer-name-input"
-                        />
-                    </S.StyledInput>
-                    <S.StyledInput>
-                        <label htmlFor="cpf">CPF do comprador:</label>
-                        <input
-                            type="number"
-                            name="cpf"
-                            id="cpf"
-                            value={form.cpf}
-                            onChange={handleForm}
-                            placeholder="Digite seu CPF..."
-                            required
-                            data-identifier="buyer-cpf-input"
-                        />
-                    </S.StyledInput>
+                    {form.map((ticket, index) => (
+                        <S.StyledInputs key={index}>
+                            {form.length > 1 && (
+                                <>
+                                    <strong>
+                                        {index + 1}º Ingresso: Assento{" "}
+                                        {form[index].seat.name}
+                                    </strong>
+                                    <br />
+                                </>
+                            )}
+                            <label htmlFor="name">Nome completo *</label>
+                            <input
+                                type="text"
+                                name="name"
+                                id="name"
+                                value={form[index].name}
+                                onChange={(e) =>
+                                    handleForm(e, form[index].seat, index)
+                                }
+                                placeholder="Digite seu nome..."
+                                required
+                                data-identifier="buyer-name-input"
+                            />
+                            <label htmlFor="cpf">CPF *</label>
+                            <input
+                                type="number"
+                                name="cpf"
+                                id="cpf"
+                                value={form[index].cpf}
+                                onChange={(e) =>
+                                    handleForm(e, form[index].seat, index)
+                                }
+                                placeholder="Digite seu CPF..."
+                                required
+                                data-identifier="buyer-cpf-input"
+                            />
+                        </S.StyledInputs>
+                    ))}
                     <button type="submit" data-identifier="reservation-btn">
                         Reservar assento(s)
                     </button>

@@ -16,7 +16,6 @@ function SessionsPage({ setChosenSession, chosenMovie }) {
             .get(URL)
             .then((res) => {
                 setSessions(res.data.days);
-                // console.log(res.data);
             })
             .catch((err) => {
                 console.error(err);
@@ -26,8 +25,6 @@ function SessionsPage({ setChosenSession, chosenMovie }) {
     if (sessions === null) {
         return <LoadingPage />;
     }
-
-    console.log("chosenMovie", chosenMovie);
 
     return (
         <>

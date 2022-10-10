@@ -6,10 +6,10 @@ function SuccessPage({
     chosenMovie,
     chosenDay,
     chosenHour,
-    selectedSeats,
-    userInfo,
+    requestInfo,
     resetBooking,
 }) {
+    const selectedSeats = requestInfo.map((ticket) => ticket.seat.name);
     const navigate = useNavigate();
 
     function endBooking() {
@@ -33,9 +33,13 @@ function SuccessPage({
                     Assento {seat}
                 </p>
             ))}
-            <strong>Comprador</strong>
-            <p>Nome: {userInfo.name}</p>
-            <p>CPF: {userInfo.cpf}</p>
+            <strong>Compradores</strong>
+            {requestInfo.map((ticket) => (
+                <div key={ticket.seat.id}>
+                    <p>Nome: {ticket.name}</p>
+                    <p>CPF: {ticket.cpf}</p>
+                </div>
+            ))}
             <button onClick={endBooking} data-identifier="back-to-home-btn">
                 Voltar para Home
             </button>
