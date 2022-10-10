@@ -3,8 +3,9 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import LoadingPage from "../LoadingPage/LoadingPage";
 import * as S from "./style";
+import Footer from "../../components/Footer/Footer";
 
-function SessionsPage({ setChosenSession }) {
+function SessionsPage({ setChosenSession, chosenMovie }) {
     const [sessions, setSessions] = useState(null);
     const { idMovie } = useParams();
 
@@ -15,7 +16,7 @@ function SessionsPage({ setChosenSession }) {
             .get(URL)
             .then((res) => {
                 setSessions(res.data.days);
-                console.log(res.data);
+                // console.log(res.data);
             })
             .catch((err) => {
                 console.error(err);
@@ -26,28 +27,36 @@ function SessionsPage({ setChosenSession }) {
         return <LoadingPage />;
     }
 
+    console.log("chosenMovie", chosenMovie);
+
     return (
-        <S.StyledSessionsPage>
-            <h2>Selecione o horário</h2>
-            {sessions.map((day) => (
-                <S.SessionDay key={day.id}>
-                    <h3>
-                        {day.weekday} - {day.date}
-                    </h3>
-                    {day.showtimes.map((session) => (
-                        <Link to={`/assentos/${session.id}`} key={session.id}>
-                            <button
-                                onClick={() =>
-                                    setChosenSession({ day, session })
-                                }
+        <>
+            <S.StyledSessionsPage>
+                <h2>Selecione o horário</h2>
+                {sessions.map((day) => (
+                    <S.SessionDay key={day.id}>
+                        <h3>
+                            {day.weekday} - {day.date}
+                        </h3>
+                        {day.showtimes.map((session) => (
+                            <Link
+                                to={`/assentos/${session.id}`}
+                                key={session.id}
                             >
-                                {session.name}
-                            </button>
-                        </Link>
-                    ))}
-                </S.SessionDay>
-            ))}
-        </S.StyledSessionsPage>
+                                <button
+                                    onClick={() =>
+                                        setChosenSession({ day, session })
+                                    }
+                                >
+                                    {session.name}
+                                </button>
+                            </Link>
+                        ))}
+                    </S.SessionDay>
+                ))}
+            </S.StyledSessionsPage>
+            <Footer chosenMovie={chosenMovie} />
+        </>
     );
 }
 

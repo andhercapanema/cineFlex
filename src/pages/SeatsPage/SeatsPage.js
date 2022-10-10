@@ -3,13 +3,15 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import LoadingPage from "../LoadingPage/LoadingPage";
 import * as S from "./style";
+import Footer from "../../components/Footer/Footer";
 
 function SeatsPage({
     selectedSeats,
     setSelectedSeats,
     form,
     setForm,
-    finishBooking,
+    chosenMovie,
+    chosenSession,
 }) {
     const [seats, setSeats] = useState(null);
     const { idSession } = useParams();
@@ -49,7 +51,7 @@ function SeatsPage({
             .get(seatsURL)
             .then((res) => {
                 setSeats(res.data.seats);
-                console.log(res.data.seats);
+                // console.log(res.data.seats);
             })
             .catch((err) => {
                 console.error(err);
@@ -65,9 +67,8 @@ function SeatsPage({
         axios
             .post(bookingURL, { ...form, ids: selectedSeatsId })
             .then((res) => {
-                finishBooking();
                 navigate("/sucesso");
-                console.log(res);
+                // console.log(res);
             })
             .catch((err) => {
                 console.error(err.response);
@@ -79,62 +80,65 @@ function SeatsPage({
     }
 
     return (
-        <S.StyledSeatsPage>
-            <h2>Selecione o(s) assento(s)</h2>
-            <S.SessionMap>
-                {seats.map((seat) => (
-                    <S.Seat
-                        key={seat.id}
-                        color={seatColor(seat)}
-                        onClick={() => selectSeat(seat)}
-                        disabled={!seat.isAvailable}
-                    >
-                        <p>{seat.name}</p>
-                    </S.Seat>
-                ))}
-            </S.SessionMap>
-            <S.SeatsLabel>
-                <S.LabelDescription>
-                    <S.Seat color={"GREEN"} disabled={true}></S.Seat>
-                    <p>Selecionado</p>
-                </S.LabelDescription>
-                <S.LabelDescription>
-                    <S.Seat color={"GREY"} disabled={true}></S.Seat>
-                    <p>Disponível</p>
-                </S.LabelDescription>
-                <S.LabelDescription>
-                    <S.Seat color={"YELLOW"} disabled={true}></S.Seat>
-                    <p>Indisponível</p>
-                </S.LabelDescription>
-            </S.SeatsLabel>
-            <S.BookingForm onSubmit={bookSeats}>
-                <S.StyledInput>
-                    <label htmlFor="name">Nome do comprador:</label>
-                    <input
-                        type="text"
-                        name="name"
-                        id="name"
-                        value={form.name}
-                        onChange={handleForm}
-                        placeholder="Digite seu nome..."
-                        required
-                    />
-                </S.StyledInput>
-                <S.StyledInput>
-                    <label htmlFor="cpf">CPF do comprador:</label>
-                    <input
-                        type="number"
-                        name="cpf"
-                        id="cpf"
-                        value={form.cpf}
-                        onChange={handleForm}
-                        placeholder="Digite seu CPF..."
-                        required
-                    />
-                </S.StyledInput>
-                <button type="submit">Reservar assento(s)</button>
-            </S.BookingForm>
-        </S.StyledSeatsPage>
+        <>
+            <S.StyledSeatsPage>
+                <h2>Selecione o(s) assento(s)</h2>
+                <S.SessionMap>
+                    {seats.map((seat) => (
+                        <S.Seat
+                            key={seat.id}
+                            color={seatColor(seat)}
+                            onClick={() => selectSeat(seat)}
+                            disabled={!seat.isAvailable}
+                        >
+                            <p>{seat.name}</p>
+                        </S.Seat>
+                    ))}
+                </S.SessionMap>
+                <S.SeatsLabel>
+                    <S.LabelDescription>
+                        <S.Seat color={"GREEN"} disabled={true}></S.Seat>
+                        <p>Selecionado</p>
+                    </S.LabelDescription>
+                    <S.LabelDescription>
+                        <S.Seat color={"GREY"} disabled={true}></S.Seat>
+                        <p>Disponível</p>
+                    </S.LabelDescription>
+                    <S.LabelDescription>
+                        <S.Seat color={"YELLOW"} disabled={true}></S.Seat>
+                        <p>Indisponível</p>
+                    </S.LabelDescription>
+                </S.SeatsLabel>
+                <S.BookingForm onSubmit={bookSeats}>
+                    <S.StyledInput>
+                        <label htmlFor="name">Nome do comprador:</label>
+                        <input
+                            type="text"
+                            name="name"
+                            id="name"
+                            value={form.name}
+                            onChange={handleForm}
+                            placeholder="Digite seu nome..."
+                            required
+                        />
+                    </S.StyledInput>
+                    <S.StyledInput>
+                        <label htmlFor="cpf">CPF do comprador:</label>
+                        <input
+                            type="number"
+                            name="cpf"
+                            id="cpf"
+                            value={form.cpf}
+                            onChange={handleForm}
+                            placeholder="Digite seu CPF..."
+                            required
+                        />
+                    </S.StyledInput>
+                    <button type="submit">Reservar assento(s)</button>
+                </S.BookingForm>
+            </S.StyledSeatsPage>
+            <Footer chosenMovie={chosenMovie} chosenSession={chosenSession} />
+        </>
     );
 }
 

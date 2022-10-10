@@ -13,7 +13,7 @@ function MoviesPage({ setChosenMovie }) {
         axios
             .get(`${URL}/movies`)
             .then((res) => {
-                console.log(res.data);
+                // console.log(res.data);
                 setMovies(res.data);
             })
             .catch((err) => {

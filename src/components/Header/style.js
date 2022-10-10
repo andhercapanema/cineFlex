@@ -15,4 +15,16 @@ export const StyledHeader = styled.header`
     top: 0;
     left: 0;
     width: 100%;
+
+    ion-icon {
+        position: absolute;
+        top: calc(67px - 36px) / 2;
+        left: 30px;
+        font-size: 36px;
+        cursor: pointer;
+    }
+
+    h1 {
+        cursor: pointer;
+    }
 `;

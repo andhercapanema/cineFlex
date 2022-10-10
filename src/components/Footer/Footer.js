@@ -1,7 +1,7 @@
 import React from "react";
 import * as S from "./style";
 
-function Footer({ chosenMovie: { posterURL, title }, chosenDay, chosenHour }) {
+function Footer({ chosenMovie: { posterURL, title }, chosenSession = null }) {
     return (
         <S.StyledFooter>
             <S.ImgCard>
@@ -9,9 +9,10 @@ function Footer({ chosenMovie: { posterURL, title }, chosenDay, chosenHour }) {
             </S.ImgCard>
             <S.ChosenMovieInfo>
                 <h2>{title}</h2>
-                {chosenDay && (
+                {chosenSession && (
                     <h2>
-                        {chosenDay} - {chosenHour}
+                        {chosenSession.day.weekday} -{" "}
+                        {chosenSession.session.name}
                     </h2>
                 )}
             </S.ChosenMovieInfo>

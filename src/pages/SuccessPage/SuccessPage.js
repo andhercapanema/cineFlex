@@ -12,6 +12,11 @@ function SuccessPage({
 }) {
     const navigate = useNavigate();
 
+    function endBooking() {
+        resetBooking();
+        navigate("/");
+    }
+
     return (
         <S.StyledSuccessPage>
             <h2>Pedido feito com sucesso!</h2>
@@ -27,14 +32,7 @@ function SuccessPage({
             <strong>Comprador</strong>
             <p>Nome: {userInfo.name}</p>
             <p>CPF: {userInfo.cpf}</p>
-            <button
-                onClick={() => {
-                    resetBooking();
-                    navigate("/");
-                }}
-            >
-                Voltar para Home
-            </button>
+            <button onClick={endBooking}>Voltar para Home</button>
         </S.StyledSuccessPage>
     );
 }
