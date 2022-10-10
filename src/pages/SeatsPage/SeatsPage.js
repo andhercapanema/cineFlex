@@ -1,25 +1,33 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import Input from "../../components/Input/Input";
+import { useNavigate, useParams } from "react-router-dom";
 import LoadingPage from "../LoadingPage/LoadingPage";
 import * as S from "./style";
 
-function SeatsPage() {
+function SeatsPage({
+    selectedSeats,
+    setSelectedSeats,
+    form,
+    setForm,
+    finishBooking,
+}) {
     const [seats, setSeats] = useState(null);
-    const [selectedSeats, setSelectedSeats] = useState([]);
     const { idSession } = useParams();
+    const navigate = useNavigate();
+    let selectedSeatsId = selectedSeats.map((seat) => seat.id);
 
     const seatColor = (seat) => {
-        if (selectedSeats.includes(seat.id)) return "GREEN";
+        if (selectedSeatsId.includes(seat.id)) return "GREEN";
         if (seat.isAvailable) return "GREY";
         return "YELLOW";
     };
 
-    const selectSeat = ({ id, isAvailable }) => {
-        if (selectedSeats.includes(id)) {
+    const selectSeat = (seat) => {
+        const { id, isAvailable } = seat;
+
+        if (selectedSeatsId.includes(id)) {
             const updatedSelectedSeats = selectedSeats.filter(
-                (selected) => selected !== id
+                (selected) => selected.id !== id
             );
             setSelectedSeats(updatedSelectedSeats);
             return;
@@ -27,14 +35,18 @@ function SeatsPage() {
 
         if (!isAvailable) return alert("Esse assento não está disponível!");
 
-        setSelectedSeats([...selectedSeats, id]);
+        setSelectedSeats([...selectedSeats, seat]);
+    };
+
+    const handleForm = (e) => {
+        setForm({ ...form, [e.target.name]: e.target.value });
     };
 
     useEffect(() => {
-        const URL = `https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${idSession}/seats`;
+        const seatsURL = `https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${idSession}/seats`;
 
         axios
-            .get(URL)
+            .get(seatsURL)
             .then((res) => {
                 setSeats(res.data.seats);
                 console.log(res.data.seats);
@@ -43,6 +55,24 @@ function SeatsPage() {
                 console.error(err);
             });
     }, [idSession]);
+
+    const bookSeats = (e) => {
+        e.preventDefault();
+
+        const bookingURL =
+            "https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many";
+
+        axios
+            .post(bookingURL, { ...form, ids: selectedSeatsId })
+            .then((res) => {
+                finishBooking();
+                navigate("/sucesso");
+                console.log(res);
+            })
+            .catch((err) => {
+                console.error(err.response);
+            });
+    };
 
     if (seats === null) {
         return <LoadingPage />;
@@ -77,15 +107,33 @@ function SeatsPage() {
                     <p>Indisponível</p>
                 </S.LabelDescription>
             </S.SeatsLabel>
-            <Input
-                description="Nome do comprador"
-                placeholder="Digite seu nome..."
-            />
-            <Input
-                description="CPF do comprador"
-                placeholder="Digite seu CPF..."
-            />
-            <button>Reservar assento(s)</button>
+            <S.BookingForm onSubmit={bookSeats}>
+                <S.StyledInput>
+                    <label htmlFor="name">Nome do comprador:</label>
+                    <input
+                        type="text"
+                        name="name"
+                        id="name"
+                        value={form.name}
+                        onChange={handleForm}
+                        placeholder="Digite seu nome..."
+                        required
+                    />
+                </S.StyledInput>
+                <S.StyledInput>
+                    <label htmlFor="cpf">CPF do comprador:</label>
+                    <input
+                        type="number"
+                        name="cpf"
+                        id="cpf"
+                        value={form.cpf}
+                        onChange={handleForm}
+                        placeholder="Digite seu CPF..."
+                        required
+                    />
+                </S.StyledInput>
+                <button type="submit">Reservar assento(s)</button>
+            </S.BookingForm>
         </S.StyledSeatsPage>
     );
 }

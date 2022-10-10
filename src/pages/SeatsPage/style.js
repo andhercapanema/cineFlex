@@ -22,11 +22,6 @@ export const StyledSeatsPage = styled.main`
         letter-spacing: 0.04em;
         text-align: center;
     }
-
-    button {
-        width: 225px;
-        height: 42px;
-    }
 `;
 
 export const SessionMap = styled.ul`
@@ -76,5 +71,54 @@ export const LabelDescription = styled.ul`
         line-height: 15px;
         letter-spacing: -0.013em;
         color: #4e5a65;
+    }
+`;
+
+export const BookingForm = styled.form`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    button {
+        width: 225px;
+        height: 42px;
+        margin-top: 43px;
+    }
+`;
+
+export const StyledInput = styled.div`
+    margin: 0 auto 14px;
+
+    label {
+        font-size: 18px;
+        line-height: 21px;
+        margin-bottom: 2px;
+    }
+
+    input {
+        width: calc(100vw - 32px);
+        max-width: 348px;
+        height: 51px;
+        border: 1px solid #d5d5d5;
+        border-radius: 3px;
+        padding-left: 18px;
+        font-size: 18px;
+
+        &::placeholder {
+            font-style: italic;
+            font-size: 18px;
+            line-height: 21px;
+            color: #afafaf;
+        }
+
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        &[type="number"] {
+            -moz-appearance: textfield;
+        }
     }
 `;

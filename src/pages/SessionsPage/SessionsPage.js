@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import LoadingPage from "../LoadingPage/LoadingPage";
 import * as S from "./style";
 
-function SessionsPage() {
+function SessionsPage({ setChosenSession }) {
     const [sessions, setSessions] = useState(null);
     const { idMovie } = useParams();
 
@@ -36,7 +36,13 @@ function SessionsPage() {
                     </h3>
                     {day.showtimes.map((session) => (
                         <Link to={`/assentos/${session.id}`} key={session.id}>
-                            <button>{session.name}</button>
+                            <button
+                                onClick={() =>
+                                    setChosenSession({ day, session })
+                                }
+                            >
+                                {session.name}
+                            </button>
                         </Link>
                     ))}
                 </S.SessionDay>
