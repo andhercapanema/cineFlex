@@ -35,7 +35,7 @@ function SessionsPage({ setChosenSession, chosenMovie }) {
                 <h2>Selecione o horário</h2>
                 {sessions.map((day) => (
                     <S.SessionDay key={day.id}>
-                        <h3>
+                        <h3 data-identifier="session-date">
                             {day.weekday} - {day.date}
                         </h3>
                         {day.showtimes.map((session) => (
@@ -47,6 +47,7 @@ function SessionsPage({ setChosenSession, chosenMovie }) {
                                     onClick={() =>
                                         setChosenSession({ day, session })
                                     }
+                                    data-identifier="hour-minute-btn"
                                 >
                                     {session.name}
                                 </button>

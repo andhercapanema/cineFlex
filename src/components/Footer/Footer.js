@@ -4,10 +4,10 @@ import * as S from "./style";
 function Footer({ chosenMovie: { posterURL, title }, chosenSession = null }) {
     return (
         <S.StyledFooter>
-            <S.ImgCard>
+            <S.ImgCard data-identifier="movie-img-preview">
                 <img src={posterURL} alt={`Capa do filme ${title}`} />
             </S.ImgCard>
-            <S.ChosenMovieInfo>
+            <S.ChosenMovieInfo data-identifier="movie-and-session-infos-preview">
                 <h2>{title}</h2>
                 {chosenSession && (
                     <h2>

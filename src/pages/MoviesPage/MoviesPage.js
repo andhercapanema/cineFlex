@@ -31,7 +31,10 @@ function MoviesPage({ setChosenMovie }) {
             <S.MoviesSection>
                 {movies.map((movie) => (
                     <Link to={`/sessoes/${movie.id}`} key={movie.id}>
-                        <S.MovieCover onClick={() => setChosenMovie(movie)}>
+                        <S.MovieCover
+                            onClick={() => setChosenMovie(movie)}
+                            data-identifier="movie-outdoor"
+                        >
                             <img
                                 src={movie.posterURL}
                                 alt={`Capa filme ${movie.title}`}

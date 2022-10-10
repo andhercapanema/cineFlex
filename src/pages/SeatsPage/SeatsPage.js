@@ -90,6 +90,7 @@ function SeatsPage({
                             color={seatColor(seat)}
                             onClick={() => selectSeat(seat)}
                             disabled={!seat.isAvailable}
+                            data-identifier="seat"
                         >
                             <p>{seat.name}</p>
                         </S.Seat>
@@ -97,15 +98,27 @@ function SeatsPage({
                 </S.SessionMap>
                 <S.SeatsLabel>
                     <S.LabelDescription>
-                        <S.Seat color={"GREEN"} disabled={true}></S.Seat>
+                        <S.Seat
+                            color={"GREEN"}
+                            disabled={true}
+                            data-identifier="seat-selected-subtitle"
+                        ></S.Seat>
                         <p>Selecionado</p>
                     </S.LabelDescription>
                     <S.LabelDescription>
-                        <S.Seat color={"GREY"} disabled={true}></S.Seat>
+                        <S.Seat
+                            color={"GREY"}
+                            disabled={true}
+                            data-identifier="seat-available-subtitle"
+                        ></S.Seat>
                         <p>Disponível</p>
                     </S.LabelDescription>
                     <S.LabelDescription>
-                        <S.Seat color={"YELLOW"} disabled={true}></S.Seat>
+                        <S.Seat
+                            color={"YELLOW"}
+                            disabled={true}
+                            data-identifier="seat-unavailable-subtitle"
+                        ></S.Seat>
                         <p>Indisponível</p>
                     </S.LabelDescription>
                 </S.SeatsLabel>
@@ -120,6 +133,7 @@ function SeatsPage({
                             onChange={handleForm}
                             placeholder="Digite seu nome..."
                             required
+                            data-identifier="buyer-name-input"
                         />
                     </S.StyledInput>
                     <S.StyledInput>
@@ -132,9 +146,12 @@ function SeatsPage({
                             onChange={handleForm}
                             placeholder="Digite seu CPF..."
                             required
+                            data-identifier="buyer-cpf-input"
                         />
                     </S.StyledInput>
-                    <button type="submit">Reservar assento(s)</button>
+                    <button type="submit" data-identifier="reservation-btn">
+                        Reservar assento(s)
+                    </button>
                 </S.BookingForm>
             </S.StyledSeatsPage>
             <Footer chosenMovie={chosenMovie} chosenSession={chosenSession} />
