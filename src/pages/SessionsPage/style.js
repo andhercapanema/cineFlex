@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const StyledSessionsPage = styled.main`
     margin-top: 67px;
+    margin-bottom: 117px;
     display: flex;
     flex-direction: column;
     padding: 0 25px;

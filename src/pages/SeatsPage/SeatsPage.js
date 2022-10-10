@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import LoadingPage from "../LoadingPage/LoadingPage";
 import * as S from "./style";
 import Footer from "../../components/Footer/Footer";
+import SeatsLabel from "../../components/SeatsLabel/SeatsLabel";
 
 function SeatsPage({ form, setForm, chosenMovie, chosenSession }) {
     const [seats, setSeats] = useState(null);
@@ -119,32 +120,7 @@ function SeatsPage({ form, setForm, chosenMovie, chosenSession }) {
                         </S.Seat>
                     ))}
                 </S.SessionMap>
-                <S.SeatsLabel>
-                    <S.LabelDescription>
-                        <S.Seat
-                            color={"GREEN"}
-                            disabled={true}
-                            data-identifier="seat-selected-subtitle"
-                        ></S.Seat>
-                        <p>Selecionado</p>
-                    </S.LabelDescription>
-                    <S.LabelDescription>
-                        <S.Seat
-                            color={"GREY"}
-                            disabled={true}
-                            data-identifier="seat-available-subtitle"
-                        ></S.Seat>
-                        <p>Disponível</p>
-                    </S.LabelDescription>
-                    <S.LabelDescription>
-                        <S.Seat
-                            color={"YELLOW"}
-                            disabled={true}
-                            data-identifier="seat-unavailable-subtitle"
-                        ></S.Seat>
-                        <p>Indisponível</p>
-                    </S.LabelDescription>
-                </S.SeatsLabel>
+                <SeatsLabel />
                 <S.BookingForm onSubmit={bookSeats}>
                     {form.map((ticket, index) => (
                         <S.StyledInputs key={index}>
